@@ -13,6 +13,7 @@ import { AuthService } from './auth.service';
 import { type Request, type Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { Throttle } from '@nestjs/throttler';
+import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
@@ -74,6 +75,44 @@ export class AuthController {
   }
 
   @Post('/signUp')
+  @ApiOperation({
+    summary: 'Регистрация нового пользователя',
+    description:
+      'Создаёт нового пользователя и возвращает accessToken в cookie',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Пользователь успешно зарегистрирован',
+    schema: {
+      example: {
+        user: {
+          id: 1,
+          email: 'user@example.com',
+          firstName: 'John',
+          lastName: 'Doe',
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 400,
+    description:
+      'Невалидные данные (email уже существует или пароль слишком короткий)',
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Внутренняя ошибка сервера',
+  })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        email: { type: 'string', example: 'user@example.com' },
+        password: { type: 'string', example: 'strongPassword123' },
+      },
+      required: ['email', 'password'],
+    },
+  })
   async signUp(
     @Body() body: { email: string; password: string },
     @Res() res: Response,
