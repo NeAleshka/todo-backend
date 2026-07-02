@@ -23,7 +23,9 @@ export class AuthController {
 
   @Get('google')
   @UseGuards(AuthGuard('google'))
-  async googleAuthStart() {}
+  googleAuthStart() {
+    console.log('start GoogleAuth');
+  }
 
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))
@@ -57,12 +59,11 @@ export class AuthController {
     }
   }
 
-  @Post('/login')
-  async login(
+  @Post('/signIn')
+  async singIn(
     @Body() body: { email: string; password: string },
     @Res() res: Response,
   ) {
-    console.log(body);
     const authUser = await this.authService.authWithLogin({
       email: body.email,
       password: body.password,
@@ -70,5 +71,26 @@ export class AuthController {
     if (!authUser) {
       res.sendStatus(HttpStatus.UNAUTHORIZED);
     } else res.sendStatus(HttpStatus.OK);
+  }
+
+  @Post('/signUp')
+  async signUp(
+    @Body() body: { email: string; password: string },
+    @Res() res: Response,
+  ) {
+    console.log(body);
+    const { email, password } = body;
+    const { accessToken, user } = await this.authService.singUp({
+      email,
+      password,
+    });
+    return res
+      .cookie('accessToken', accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+      })
+      .sendStatus(HttpStatus.OK)
+      .send({ user });
   }
 }

@@ -43,4 +43,20 @@ export class AuthService {
       where: { email, password },
     });
   }
+
+  async singUp(userData: { email: string; password: string }) {
+    const user = await this.prismaService.user.create({
+      data: {
+        email: userData.email,
+        password: userData.password,
+      },
+    });
+    console.log(user);
+
+    return {
+      accessToken: this.generateToken({ id: user.id, email: user.email })
+        .access_token,
+      user,
+    };
+  }
 }
