@@ -1,26 +1,74 @@
-import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
-import { GoogleUser } from './auth.strategy';
-
-export interface GoogleRequest extends Request {
-  user: GoogleUser;
-}
+import { type Request, type Response } from 'express';
+import { JwtService } from '@nestjs/jwt';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private jwtService: JwtService,
+  ) {}
+
   @Get('google')
   @UseGuards(AuthGuard('google'))
-  async googleAuth() {}
+  async googleAuthStart() {}
+
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))
-  async googleAuthRedirect(@Req() req: GoogleRequest, @Res() res: Response) {
+  async googleRedirect(@Req() req: Request, @Res() res: Response) {
     const googleUser = req.user;
     const user = await this.authService.validateOrCreateUser(googleUser);
     const token = this.authService.generateToken(user);
-    console.log('✅ Токен сгенерирован:', token);
-    //@ts-ignore
-    return res.redirect(`http://localhost:5173?token=${token.access_token}`);
+    res.cookie('accessToken', token.access_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+    });
+
+    res.redirect('http://localhost:5173');
+  }
+
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
+  @Get('/me')
+  async getMe(@Req() req: Request, @Res() res: Response) {
+    const token = (req.cookies?.['accessToken'] as string) ?? '';
+    if (!token) {
+      return res.sendStatus(HttpStatus.UNAUTHORIZED);
+    }
+    try {
+      await this.jwtService.verifyAsync(token, {
+        secret: process.env.JWT_SECRET,
+      });
+      return res.sendStatus(HttpStatus.OK);
+    } catch {
+      return res.sendStatus(HttpStatus.UNAUTHORIZED);
+    }
+  }
+
+  @Post('/login')
+  async login(
+    @Body() body: { email: string; password: string },
+    @Res() res: Response,
+  ) {
+    console.log(body);
+    const authUser = await this.authService.authWithLogin({
+      email: body.email,
+      password: body.password,
+    });
+    if (!authUser) {
+      res.sendStatus(HttpStatus.UNAUTHORIZED);
+    } else res.sendStatus(HttpStatus.OK);
   }
 }

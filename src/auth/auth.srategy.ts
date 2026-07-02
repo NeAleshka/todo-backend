@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy, Profile } from 'passport-google-oauth20';
-
+import { Profile, Strategy } from 'passport-google-oauth20';
 export type GoogleUser = {
   email?: string;
   firstName?: string;
@@ -10,7 +9,7 @@ export type GoogleUser = {
 };
 
 @Injectable()
-export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
+export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
   constructor() {
     super({
       clientID: process.env.GOOGLE_CLIENT_ID ?? '',
@@ -19,18 +18,20 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       scope: ['email', 'profile'],
     });
   }
-  validate(profile: Profile): GoogleUser {
+  validate(
+    _accessToken: string,
+    _refreshToken: string,
+    profile: Profile,
+  ): GoogleUser {
     const {
-      _json: { given_name, family_name },
-      photos,
-      emails,
+      _json: { family_name, given_name, email, picture },
     } = profile;
 
     return {
-      email: emails?.[0].value,
-      firstName: given_name,
-      lastName: family_name,
-      picture: photos?.[0]?.value,
+      email,
+      firstName: family_name,
+      lastName: given_name,
+      picture,
     };
   }
 }

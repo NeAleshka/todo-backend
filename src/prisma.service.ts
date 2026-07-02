@@ -15,8 +15,13 @@ export class PrismaService
   }
 
   async onModuleInit() {
-    await this.$connect();
-    console.log('✅ Подключение к базе данных установлено');
+    await this.$connect()
+      .then(() => {
+        console.log('✅ Подключение к базе данных установлено');
+      })
+      .catch(() => {
+        console.log('Подключение к базе данных не установлено');
+      });
   }
 
   async onModuleDestroy() {

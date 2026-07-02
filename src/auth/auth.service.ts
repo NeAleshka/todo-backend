@@ -1,36 +1,46 @@
-import { Injectable } from '@nestjs/common';
-import { GoogleUser } from './auth.strategy';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
+import { GoogleUser } from './auth.srategy';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private prisma: PrismaService,
+    private readonly prismaService: PrismaService,
     private jwtService: JwtService,
   ) {}
-  async validateOrCreateUser(googleUser: GoogleUser) {
-    let user = await this.prisma.user.findUnique({
-      where: { email: googleUser.email },
+
+  async validateOrCreateUser(user?: GoogleUser) {
+    if (!user) throw new UnauthorizedException('User not found');
+
+    let bdUser = await this.prismaService.user.findUnique({
+      where: { email: user.email },
     });
 
-    if (!user) {
-      user = await this.prisma.user.create({
+    if (!bdUser) {
+      bdUser = await this.prismaService.user.create({
         data: {
-          email: googleUser.email ?? '',
-          firstName: googleUser.firstName,
-          lastName: googleUser.lastName,
-          picture: googleUser.picture,
+          email: user.email ?? '',
+          picture: user.picture,
+          firstName: user.firstName,
+          lastName: user.lastName,
         },
       });
     }
-
-    return user;
+    return bdUser;
   }
+
   generateToken(user: { id: number; email: string }) {
     const payload = { sub: user.id, email: user.email };
     return {
       access_token: this.jwtService.sign(payload),
     };
+  }
+  authWithLogin(userData: { email: string; password: string }) {
+    const { email, password } = userData;
+
+    return this.prismaService.user.findUnique({
+      where: { email, password },
+    });
   }
 }
