@@ -13,6 +13,7 @@ async function bootstrap() {
   const backendUrl = configService.get('BACKEND_URL');
   const port = configService.get('PORT');
   // Включаем CORS для фронта
+  console.log({ frontUrl });
   app.enableCors({
     origin: frontUrl, // разрешаем запросы только с нашего фронта
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],

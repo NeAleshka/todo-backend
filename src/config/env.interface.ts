@@ -29,11 +29,9 @@ export class EnvConfig {
   GOOGLE_CLIENT_SECRET: string;
 
   // 6. URLs
-  @IsUrl()
   @IsNotEmpty()
   FRONTEND_URL: string;
 
-  @IsUrl()
   @IsNotEmpty()
   BACKEND_URL: string;
 }
