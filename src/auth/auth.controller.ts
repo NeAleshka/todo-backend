@@ -14,12 +14,14 @@ import { type Request, type Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { Throttle } from '@nestjs/throttler';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ConfigEnvService } from '../config/config.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private authService: AuthService,
     private jwtService: JwtService,
+    private configService: ConfigEnvService,
   ) {}
 
   @Get('google')
@@ -40,7 +42,7 @@ export class AuthController {
       sameSite: 'lax',
     });
 
-    res.redirect('http://localhost:5173');
+    res.redirect(this.configService.get('FRONTEND_URL'));
   }
 
   @Throttle({ default: { limit: 5, ttl: 60000 } })

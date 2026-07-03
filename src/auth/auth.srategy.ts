@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Profile, Strategy } from 'passport-google-oauth20';
+import { ConfigEnvService } from '../config/config.service';
 export type GoogleUser = {
   email?: string;
   firstName?: string;
@@ -10,11 +11,14 @@ export type GoogleUser = {
 
 @Injectable()
 export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
-  constructor() {
+  constructor(private configEnvService: ConfigEnvService) {
+    const clientID = configEnvService.get('GOOGLE_CLIENT_ID');
+    const clientSecret = configEnvService.get('GOOGLE_CLIENT_SECRET');
+    const callbackURL = `${configEnvService.get('BACKEND_URL')}/auth/google/redirect`;
     super({
-      clientID: process.env.GOOGLE_CLIENT_ID ?? '',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
-      callbackURL: 'http://localhost:3000/auth/google/redirect',
+      clientID,
+      clientSecret,
+      callbackURL,
       scope: ['email', 'profile'],
     });
   }
