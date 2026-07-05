@@ -6,6 +6,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { ConfigModule } from '@nestjs/config';
 import { validateEnv } from './config/env.config';
 import { ConfigEnvService } from './config/config.service';
+import { JwtModule } from '@nestjs/jwt';
 
 @Global()
 @Module({
@@ -26,6 +27,13 @@ import { ConfigEnvService } from './config/config.service';
           limit: 10,
         },
       ],
+    }),
+    JwtModule.registerAsync({
+      useFactory: (configService: ConfigEnvService) => ({
+        secret: configService.get('JWT_SECRET'),
+        signOptions: { expiresIn: '7d' },
+      }),
+      inject: [ConfigEnvService],
     }),
   ],
 })

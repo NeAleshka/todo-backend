@@ -2,12 +2,14 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { GoogleUser } from './auth.srategy';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigEnvService } from '../config/config.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prismaService: PrismaService,
     private jwtService: JwtService,
+    private configService: ConfigEnvService,
   ) {}
 
   async validateOrCreateUser(user?: GoogleUser) {
@@ -32,8 +34,11 @@ export class AuthService {
 
   generateToken(user: { id: number; email: string }) {
     const payload = { sub: user.id, email: user.email };
+    console.log(payload);
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(payload, {
+        secret: this.configService.get('JWT_SECRET'),
+      }),
     };
   }
   authWithLogin(userData: { email: string; password: string }) {

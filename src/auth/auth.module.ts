@@ -7,11 +7,6 @@ import { GoogleAuthStrategy } from './auth.srategy';
 @Module({
   controllers: [AuthController],
   providers: [AuthService, GoogleAuthStrategy],
-  imports: [
-    JwtModule.register({
-      secret: process.env.JWT_SECRET || 'my_secret_key',
-      signOptions: { expiresIn: '7d' },
-    }),
-  ],
+  imports: [JwtModule],
 })
 export class AuthModule {}

@@ -5,6 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
 import { ConfigEnvService } from './config/config.service';
+import * as fs from 'node:fs';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,8 +13,6 @@ async function bootstrap() {
   const frontUrl = configService.get('FRONTEND_URL');
   const backendUrl = configService.get('BACKEND_URL');
   const port = configService.get('PORT');
-  // Включаем CORS для фронта
-  console.log({ frontUrl });
   app.enableCors({
     origin: frontUrl, // разрешаем запросы только с нашего фронта
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
@@ -29,7 +28,9 @@ async function bootstrap() {
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, documentFactory);
+  fs.writeFileSync('openapi.json', JSON.stringify(documentFactory(), null, 2));
+
   await app.listen(port);
-  console.log(`🚀 Бэкенд запущен на ${backendUrl}:${port}`);
+  console.log(`🚀 Бэкенд запущен на ${backendUrl}`);
 }
 void bootstrap().then();

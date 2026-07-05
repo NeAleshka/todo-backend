@@ -13,7 +13,12 @@ import { AuthService } from './auth.service';
 import { type Request, type Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { Throttle } from '@nestjs/throttler';
-import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiExcludeEndpoint,
+  ApiOperation,
+  ApiResponse,
+} from '@nestjs/swagger';
 import { ConfigEnvService } from '../config/config.service';
 
 @Controller('auth')
@@ -26,10 +31,15 @@ export class AuthController {
 
   @Get('google')
   @UseGuards(AuthGuard('google'))
-  googleAuthStart() {
+  @ApiOperation({
+    summary: 'Авторизация через Google',
+    operationId: 'googleAuth',
+  })
+  googleAuth() {
     console.log('start GoogleAuth');
   }
 
+  @ApiExcludeEndpoint()
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))
   async googleRedirect(@Req() req: Request, @Res() res: Response) {
@@ -47,22 +57,51 @@ export class AuthController {
 
   @Throttle({ default: { limit: 5, ttl: 60000 } })
   @Get('/me')
+  @ApiOperation({
+    summary: 'Проверка авторизации',
+    description: 'Проверяет валидность токена',
+    operationId: 'Me',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Пользователь авторизован',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'Пользователь не авторизован',
+    schema: {
+      type: 'object',
+      properties: {
+        message: { type: 'string' },
+      },
+    },
+  })
   async getMe(@Req() req: Request, @Res() res: Response) {
     const token = (req.cookies?.['accessToken'] as string) ?? '';
     if (!token) {
-      return res.sendStatus(HttpStatus.UNAUTHORIZED);
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        message: 'Не авторизован',
+      });
     }
+
     try {
       await this.jwtService.verifyAsync(token, {
-        secret: process.env.JWT_SECRET,
+        secret: this.configService.get('JWT_SECRET'),
       });
       return res.sendStatus(HttpStatus.OK);
-    } catch {
-      return res.sendStatus(HttpStatus.UNAUTHORIZED);
+    } catch (error) {
+      console.log(error);
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        message: 'Не авторизован',
+      });
     }
   }
 
   @Post('/signIn')
+  @ApiOperation({
+    summary: 'Вход по логину и паролю',
+    operationId: 'signIn',
+  })
   async singIn(
     @Body() body: { email: string; password: string },
     @Res() res: Response,
@@ -79,6 +118,7 @@ export class AuthController {
   @Post('/signUp')
   @ApiOperation({
     summary: 'Регистрация нового пользователя',
+    operationId: 'signUp',
     description:
       'Создаёт нового пользователя и возвращает accessToken в cookie',
   })
