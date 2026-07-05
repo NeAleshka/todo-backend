@@ -1,6 +1,48 @@
 {
   "openapi": "3.0.0",
   "paths": {
+    "/": {
+      "get": {
+        "operationId": "StaticController_getIndex",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Static"
+        ]
+      }
+    },
+    "/privacy.html": {
+      "get": {
+        "operationId": "StaticController_getPrivacy",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Static"
+        ]
+      }
+    },
+    "/googleef2a64e45f228d95.html": {
+      "get": {
+        "operationId": "StaticController_getGoogle",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Static"
+        ]
+      }
+    },
     "/auth/google": {
       "get": {
         "operationId": "googleAuth",

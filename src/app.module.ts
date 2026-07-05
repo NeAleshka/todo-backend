@@ -7,14 +7,20 @@ import { ConfigModule } from '@nestjs/config';
 import { validateEnv } from './config/env.config';
 import { ConfigEnvService } from './config/config.service';
 import { JwtModule } from '@nestjs/jwt';
+import { StaticController } from './static.controller';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Global()
 @Module({
-  controllers: [AppController],
+  controllers: [AppController, StaticController],
   providers: [PrismaService, ConfigEnvService],
   exports: [PrismaService, ConfigEnvService],
   imports: [
     AuthModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, 'public'),
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV || 'dev'}`,

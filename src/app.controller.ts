@@ -1,12 +1,16 @@
-import { Controller, Get } from '@nestjs/common';
-import { ApiExcludeEndpoint, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Res } from '@nestjs/common';
+import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
+import { readFileSync } from 'fs';
+import { join } from 'path';
+import type { Response } from 'express';
+
 @ApiTags('Todo')
 @Controller()
 export class AppController {
   @ApiExcludeEndpoint()
   @Get()
-  @ApiOperation({ summary: 'Проверка работоспособности API' })
-  getHello(): string {
-    return 'Todo API is running! 🚀';
+  getIndex(@Res() res: Response) {
+    const html = readFileSync(join(__dirname, 'public', 'index.html'), 'utf-8');
+    res.send(html);
   }
 }
