@@ -34,7 +34,6 @@ export class AuthService {
 
   generateToken(user: { id: number; email: string }) {
     const payload = { sub: user.id, email: user.email };
-    console.log(payload);
     return {
       access_token: this.jwtService.sign(payload, {
         secret: this.configService.get('JWT_SECRET'),
