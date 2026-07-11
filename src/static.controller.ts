@@ -2,15 +2,17 @@ import { Controller, Get, Res } from '@nestjs/common';
 import { type Response } from 'express';
 import { join } from 'path';
 import { readFileSync } from 'fs';
+import { ApiExcludeEndpoint } from '@nestjs/swagger';
 
 @Controller()
 export class StaticController {
+  @ApiExcludeEndpoint()
   @Get()
   getIndex(@Res() res: Response) {
     const html = readFileSync(join(__dirname, 'public', 'index.html'), 'utf-8');
     res.send(html);
   }
-
+  @ApiExcludeEndpoint()
   @Get('/privacy.html')
   getPrivacy(@Res() res: Response) {
     const html = readFileSync(
@@ -19,7 +21,7 @@ export class StaticController {
     );
     res.send(html);
   }
-
+  @ApiExcludeEndpoint()
   @Get('googleef2a64e45f228d95.html')
   getGoogle(@Res() res: Response) {
     const html = readFileSync(

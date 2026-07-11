@@ -1,48 +1,6 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/": {
-      "get": {
-        "operationId": "StaticController_getIndex",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Static"
-        ]
-      }
-    },
-    "/privacy.html": {
-      "get": {
-        "operationId": "StaticController_getPrivacy",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Static"
-        ]
-      }
-    },
-    "/googleef2a64e45f228d95.html": {
-      "get": {
-        "operationId": "StaticController_getGoogle",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Static"
-        ]
-      }
-    },
     "/auth/google": {
       "get": {
         "operationId": "googleAuth",
@@ -65,7 +23,14 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Пользователь авторизован"
+            "description": "Пользователь авторизован",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
           },
           "401": {
             "description": "Пользователь не авторизован",
@@ -93,6 +58,30 @@
       "post": {
         "operationId": "signIn",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "user@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "strongPassword123"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": ""
@@ -123,11 +112,16 @@
                   "password": {
                     "type": "string",
                     "example": "strongPassword123"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Алексей"
                   }
                 },
                 "required": [
                   "email",
-                  "password"
+                  "password",
+                  "name"
                 ]
               }
             }
@@ -179,6 +173,53 @@
   ],
   "servers": [],
   "components": {
-    "schemas": {}
+    "schemas": {
+      "UserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "ID пользователя"
+          },
+          "email": {
+            "type": "string",
+            "example": "user@example.com",
+            "description": "Email пользователя"
+          },
+          "firstName": {
+            "type": "string",
+            "example": "Alex",
+            "description": "Имя пользователя"
+          },
+          "picture": {
+            "type": "string",
+            "example": "https://picture.com",
+            "description": "Имя пользователя"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Budai",
+            "description": "Фамилия пользователя"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "Budai",
+            "description": "Фамилия пользователя"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "Budai",
+            "description": "Фамилия пользователя"
+          }
+        },
+        "required": [
+          "id",
+          "email"
+        ]
+      }
+    }
   }
 }

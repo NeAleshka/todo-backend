@@ -16,10 +16,13 @@ import { Throttle } from '@nestjs/throttler';
 import {
   ApiBody,
   ApiExcludeEndpoint,
+  ApiOkResponse,
   ApiOperation,
   ApiResponse,
 } from '@nestjs/swagger';
 import { ConfigEnvService } from '../config/config.service';
+import { PrismaService } from '../prisma.service';
+import { UserDto } from './dto/user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -27,6 +30,7 @@ export class AuthController {
     private authService: AuthService,
     private jwtService: JwtService,
     private configService: ConfigEnvService,
+    private prismaService: PrismaService,
   ) {}
 
   @Get('google')
@@ -64,9 +68,9 @@ export class AuthController {
     description: 'Проверяет валидность токена',
     operationId: 'Me',
   })
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
     description: 'Пользователь авторизован',
+    type: UserDto,
   })
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
@@ -90,7 +94,23 @@ export class AuthController {
       await this.jwtService.verifyAsync(token, {
         secret: this.configService.get('JWT_SECRET'),
       });
-      return res.sendStatus(HttpStatus.OK);
+      const user: { sub: string; email: string } =
+        await this.jwtService.decode(token);
+
+      const fendedUser = await this.prismaService.user.findUnique({
+        where: { id: Number(user.sub) },
+      });
+
+      if (!fendedUser) {
+        return res.status(HttpStatus.UNAUTHORIZED);
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password, ...userDto } = fendedUser;
+
+      return res.status(HttpStatus.OK).json({
+        ...userDto,
+      });
     } catch (error) {
       console.log(error);
       return res.status(HttpStatus.UNAUTHORIZED).json({
@@ -100,6 +120,16 @@ export class AuthController {
   }
 
   @Post('/signIn')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        email: { type: 'string', example: 'user@example.com' },
+        password: { type: 'string', example: 'strongPassword123' },
+      },
+      required: ['email', 'password'],
+    },
+  })
   @ApiOperation({
     summary: 'Вход по логину и паролю',
     operationId: 'signIn',
@@ -153,15 +183,15 @@ export class AuthController {
       properties: {
         email: { type: 'string', example: 'user@example.com' },
         password: { type: 'string', example: 'strongPassword123' },
+        name: { type: 'string', example: 'Алексей' },
       },
-      required: ['email', 'password'],
+      required: ['email', 'password', 'name'],
     },
   })
   async signUp(
-    @Body() body: { email: string; password: string },
+    @Body() body: { email: string; password: string; name: string },
     @Res() res: Response,
   ) {
-    console.log(body);
     const { email, password } = body;
     const { accessToken, user } = await this.authService.singUp({
       email,

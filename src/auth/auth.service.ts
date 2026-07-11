@@ -55,7 +55,6 @@ export class AuthService {
         password: userData.password,
       },
     });
-    console.log(user);
 
     return {
       accessToken: this.generateToken({ id: user.id, email: user.email })
