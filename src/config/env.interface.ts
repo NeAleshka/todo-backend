@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsUrl, IsIn, IsNotEmpty } from 'class-validator';
+import { IsString, IsNumber, IsIn, IsNotEmpty } from 'class-validator';
 
 export class EnvConfig {
   // 1. Режим окружения
