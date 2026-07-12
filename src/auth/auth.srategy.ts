@@ -15,7 +15,7 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
     const clientID = configEnvService.get('GOOGLE_CLIENT_ID');
     const clientSecret = configEnvService.get('GOOGLE_CLIENT_SECRET');
     const port =
-      configEnvService.get('NODE_ENV') === 'development'
+      configEnvService.get('NODE_ENV') === 'dev'
         ? `:${configEnvService.get('PORT')}`
         : '';
     const callbackURL = `${configEnvService.get('BACKEND_URL')}${port}/auth/google/redirect`;

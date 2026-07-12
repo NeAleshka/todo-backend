@@ -3,7 +3,7 @@ import { IsString, IsNumber, IsIn, IsNotEmpty } from 'class-validator';
 export class EnvConfig {
   // 1. Режим окружения
   @IsIn(['dev', 'prod', 'test'])
-  NODE_ENV: 'development' | 'production' | 'test' = 'development';
+  NODE_ENV: 'dev' | 'prod' | 'test' = 'dev';
 
   // 2. Порт
   @IsNumber()
