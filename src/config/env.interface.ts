@@ -2,7 +2,7 @@ import { IsString, IsNumber, IsIn, IsNotEmpty } from 'class-validator';
 
 export class EnvConfig {
   // 1. Режим окружения
-  @IsIn(['development', 'production', 'test'])
+  @IsIn(['dev', 'prod', 'test'])
   NODE_ENV: 'development' | 'production' | 'test' = 'development';
 
   // 2. Порт
