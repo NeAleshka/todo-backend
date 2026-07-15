@@ -33,6 +33,7 @@ export class AuthController {
     private prismaService: PrismaService,
   ) {}
 
+  @ApiExcludeEndpoint()
   @Get('google')
   @UseGuards(AuthGuard('google'))
   @ApiOperation({
@@ -89,25 +90,30 @@ export class AuthController {
         message: 'Не авторизован',
       });
     }
-
+    console.log('93');
     try {
+      console.log('95');
       await this.jwtService.verifyAsync(token, {
         secret: this.configService.get('JWT_SECRET'),
       });
+      console.log('99');
       const user: { sub: string; email: string } =
         await this.jwtService.decode(token);
 
       const fendedUser = await this.prismaService.user.findUnique({
         where: { id: Number(user.sub) },
       });
-
+      console.log('106');
       if (!fendedUser) {
-        return res.status(HttpStatus.UNAUTHORIZED);
+        console.log('108');
+        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+          message: 'Пользователь не найден',
+        });
       }
-
+      console.log('111');
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...userDto } = fendedUser;
-
+      console.log('114');
       return res.status(HttpStatus.OK).json({
         ...userDto,
       });

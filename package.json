@@ -5,6 +5,9 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "prisma": {
+    "seed": "tsx prisma/seed.tsx"
+  },
   "scripts": {
     "build": "prisma generate && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -19,7 +22,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "studio:dev": "prisma studio",
-    "studio:prod": "dotenv -e .env.prod prisma studio"
+    "studio:prod": "dotenv -e .env.prod prisma studio",
+    "seed": "prisma db seed"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

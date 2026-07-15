@@ -19,7 +19,7 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
         ? `:${configEnvService.get('PORT')}`
         : '';
     const callbackURL = `${configEnvService.get('BACKEND_URL')}${port}/auth/google/redirect`;
-    console.log({ callbackURL });
+
     super({
       clientID,
       clientSecret,

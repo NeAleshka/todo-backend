@@ -10,6 +10,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { StaticController } from './static.controller';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ProductsModule } from './products/products.module';
 
 @Global()
 @Module({
@@ -41,6 +42,7 @@ import { join } from 'path';
       }),
       inject: [ConfigEnvService],
     }),
+    ProductsModule,
   ],
 })
 export class AppModule {}

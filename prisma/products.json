@@ -1,0 +1,212 @@
+[
+  {
+    "name": "Ноутбук Pro",
+    "description": "Мощный ноутбук для работы и развлечений",
+    "price": 29990,
+    "image": "https://img.freepik.com/premium-photo/laptop.jpg",
+    "category": "Ноутбуки"
+  },
+  {
+    "name": "Смартфон X",
+    "description": "Современный смартфон с отличной камерой",
+    "price": 19990,
+    "image": "https://img.freepik.com/premium-photo/smartphone.jpg",
+    "category": "Смартфоны"
+  },
+  {
+    "name": "Наушники Wireless",
+    "description": "Беспроводные наушники с шумоподавлением",
+    "price": 4990,
+    "image": "https://img.freepik.com/premium-photo/headphones.jpg",
+    "category": "Аудио"
+  },
+  {
+    "name": "Планшет Air",
+    "description": "Легкий планшет для чтения и работы",
+    "price": 15990,
+    "image": "https://img.freepik.com/premium-photo/tablet.jpg",
+    "category": "Планшеты"
+  },
+  {
+    "name": "Умные часы",
+    "description": "Фитнес-трекер с мониторингом здоровья",
+    "price": 7990,
+    "image": "https://img.freepik.com/premium-photo/smartwatch.jpg",
+    "category": "Умные устройства"
+  },
+  {
+    "name": "Клавиатура механическая",
+    "description": "Игровая клавиатура с RGB подсветкой",
+    "price": 3490,
+    "image": "https://img.freepik.com/premium-photo/keyboard.jpg",
+    "category": "Периферия"
+  },
+  {
+    "name": "Мышь беспроводная",
+    "description": "Эргономичная мышь для работы",
+    "price": 1990,
+    "image": "https://img.freepik.com/premium-photo/mouse.jpg",
+    "category": "Периферия"
+  },
+  {
+    "name": "Монитор 27 дюймов",
+    "description": "4K монитор для профессионалов",
+    "price": 24990,
+    "image": "https://img.freepik.com/premium-photo/monitor.jpg",
+    "category": "Мониторы"
+  },
+  {
+    "name": "Веб-камера HD",
+    "description": "Камера для видеоконференций",
+    "price": 2990,
+    "image": "https://img.freepik.com/premium-photo/webcam.jpg",
+    "category": "Периферия"
+  },
+  {
+    "name": "Внешний SSD 1TB",
+    "description": "Быстрый накопитель для хранения данных",
+    "price": 8990,
+    "image": "https://img.freepik.com/premium-photo/ssd.jpg",
+    "category": "Хранение данных"
+  },
+  {
+    "name": "Игровая консоль",
+    "description": "Приставка нового поколения для игр",
+    "price": 45990,
+    "image": "https://img.freepik.com/premium-photo/game-console.jpg",
+    "category": "Игровые консоли"
+  },
+  {
+    "name": "Фитнес-браслет",
+    "description": "Трекер активности с пульсометром",
+    "price": 2990,
+    "image": "https://img.freepik.com/premium-photo/fitness-band.jpg",
+    "category": "Умные устройства"
+  },
+  {
+    "name": "Портативная колонка",
+    "description": "Bluetooth колонка с мощным звуком",
+    "price": 3990,
+    "image": "https://img.freepik.com/premium-photo/speaker.jpg",
+    "category": "Аудио"
+  },
+  {
+    "name": "Электронная книга",
+    "description": "Ридер с экраном E-Ink",
+    "price": 6990,
+    "image": "https://img.freepik.com/premium-photo/ebook.jpg",
+    "category": "Планшеты"
+  },
+  {
+    "name": "Роутер Wi-Fi 6",
+    "description": "Высокоскоростной маршрутизатор",
+    "price": 4490,
+    "image": "https://img.freepik.com/premium-photo/router.jpg",
+    "category": "Сетевое оборудование"
+  },
+  {
+    "name": "Внешний жесткий диск 2TB",
+    "description": "Надежное хранилище для файлов",
+    "price": 5990,
+    "image": "https://img.freepik.com/premium-photo/hdd.jpg",
+    "category": "Хранение данных"
+  },
+  {
+    "name": "Игровая мышь",
+    "description": "Профессиональная мышь для геймеров",
+    "price": 2990,
+    "image": "https://img.freepik.com/premium-photo/gaming-mouse.jpg",
+    "category": "Игровые аксессуары"
+  },
+  {
+    "name": "Микрофон USB",
+    "description": "Студийный микрофон для стримов",
+    "price": 4990,
+    "image": "https://img.freepik.com/premium-photo/microphone.jpg",
+    "category": "Аудио"
+  },
+  {
+    "name": "Графический планшет",
+    "description": "Планшет для цифрового рисования",
+    "price": 7990,
+    "image": "https://img.freepik.com/premium-photo/drawing-tablet.jpg",
+    "category": "Периферия"
+  },
+  {
+    "name": "Power Bank 20000mAh",
+    "description": "Портативное зарядное устройство",
+    "price": 2490,
+    "image": "https://img.freepik.com/premium-photo/powerbank.jpg",
+    "category": "Аксессуары"
+  },
+  {
+    "name": "Умная лампочка",
+    "description": "LED лампа с управлением через приложение",
+    "price": 1490,
+    "image": "https://img.freepik.com/premium-photo/smart-bulb.jpg",
+    "category": "Умные устройства"
+  },
+  {
+    "name": "Видеокарта RTX",
+    "description": "Мощная видеокарта для игр",
+    "price": 59990,
+    "image": "https://img.freepik.com/premium-photo/gpu.jpg",
+    "category": "Компьютерные компоненты"
+  },
+  {
+    "name": "Оперативная память 16GB",
+    "description": "Быстрая DDR4 память",
+    "price": 4990,
+    "image": "https://img.freepik.com/premium-photo/ram.jpg",
+    "category": "Компьютерные компоненты"
+  },
+  {
+    "name": "Процессор 8-ядерный",
+    "description": "Высокопроизводительный CPU",
+    "price": 24990,
+    "image": "https://img.freepik.com/premium-photo/cpu.jpg",
+    "category": "Компьютерные компоненты"
+  },
+  {
+    "name": "Материнская плата",
+    "description": "Плата с поддержкой PCIe 4.0",
+    "price": 12990,
+    "image": "https://img.freepik.com/premium-photo/motherboard.jpg",
+    "category": "Компьютерные компоненты"
+  },
+  {
+    "name": "Блок питания 750W",
+    "description": "Сертифицированный блок питания",
+    "price": 6990,
+    "image": "https://img.freepik.com/premium-photo/psu.jpg",
+    "category": "Компьютерные компоненты"
+  },
+  {
+    "name": "Корпус ПК",
+    "description": "Стильный корпус с подсветкой",
+    "price": 4990,
+    "image": "https://img.freepik.com/premium-photo/pc-case.jpg",
+    "category": "Компьютерные компоненты"
+  },
+  {
+    "name": "Система охлаждения",
+    "description": "Жидкостное охлаждение процессора",
+    "price": 7990,
+    "image": "https://img.freepik.com/premium-photo/cooling.jpg",
+    "category": "Компьютерные компоненты"
+  },
+  {
+    "name": "Сетевой фильтр",
+    "description": "Защита от скачков напряжения",
+    "price": 1490,
+    "image": "https://img.freepik.com/premium-photo/power-strip.jpg",
+    "category": "Аксессуары"
+  },
+  {
+    "name": "Кабель HDMI 2.1",
+    "description": "Высокоскоростной кабель 4K",
+    "price": 990,
+    "image": "https://img.freepik.com/premium-photo/hdmi-cable.jpg",
+    "category": "Аксессуары"
+  }
+]

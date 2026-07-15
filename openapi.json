@@ -1,21 +1,6 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/auth/google": {
-      "get": {
-        "operationId": "googleAuth",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "summary": "Авторизация через Google",
-        "tags": [
-          "Auth"
-        ]
-      }
-    },
     "/auth/me": {
       "get": {
         "description": "Проверяет валидность токена",
@@ -157,6 +142,168 @@
           "Auth"
         ]
       }
+    },
+    "/products": {
+      "post": {
+        "operationId": "ProductsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProductDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Products"
+        ]
+      }
+    },
+    "/products/getAll": {
+      "get": {
+        "description": "Получение всех товаров",
+        "operationId": "getAllProducts",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Все товары получены",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductDto"
+                  }
+                },
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Ноутбук Pro",
+                    "description": "Мощный ноутбук для работы и развлечений",
+                    "price": "29990",
+                    "image": "https://img.freepik.com/premium-photo/"
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Ошибка получения "
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера"
+          }
+        },
+        "summary": "Получение товаров",
+        "tags": [
+          "Products"
+        ]
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "description": "Получение товара",
+        "operationId": "getProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Товар получен",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                },
+                "example": {
+                  "id": 1,
+                  "name": "Ноутбук Pro",
+                  "description": "Мощный ноутбук для работы и развлечений",
+                  "price": "29990",
+                  "image": "https://img.freepik.com/premium-photo/"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ошибка получения"
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера"
+          }
+        },
+        "summary": "Получение товара",
+        "tags": [
+          "Products"
+        ]
+      },
+      "patch": {
+        "operationId": "ProductsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Products"
+        ]
+      },
+      "delete": {
+        "operationId": "ProductsController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Products"
+        ]
+      }
     }
   },
   "info": {
@@ -219,6 +366,49 @@
           "id",
           "email"
         ]
+      },
+      "CreateProductDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "ProductDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "ID товара"
+          },
+          "name": {
+            "type": "string",
+            "example": "Смартфон XYZ",
+            "description": "Имя товара"
+          },
+          "description": {
+            "type": "string",
+            "example": "Современный смартфон с отличной камерой и быстрым процессором",
+            "description": "Описание товара"
+          },
+          "price": {
+            "type": "string",
+            "example": "29990",
+            "description": "Цена"
+          },
+          "image": {
+            "type": "string",
+            "example": "https://img.freepik.com/p",
+            "description": "Фото товара"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "price"
+        ]
+      },
+      "UpdateProductDto": {
+        "type": "object",
+        "properties": {}
       }
     }
   }
