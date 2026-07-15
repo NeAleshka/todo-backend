@@ -81,8 +81,9 @@ export class ProductsController {
     description: 'Внутренняя ошибка сервера',
   })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const data = await this.productsService.findOne(+id);
+    return { data };
   }
 
   @Patch(':id')
