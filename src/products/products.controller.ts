@@ -11,7 +11,7 @@ import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ApiOkResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { ProductDto } from './entities/product.entity';
+import { ProductDto, ProductsResponseDto } from './entities/product.entity';
 
 @Controller('products')
 export class ProductsController {
@@ -29,17 +29,7 @@ export class ProductsController {
   })
   @ApiOkResponse({
     description: 'Все товары получены',
-    type: ProductDto,
-    isArray: true,
-    example: [
-      {
-        id: 1,
-        name: 'Ноутбук Pro',
-        description: 'Мощный ноутбук для работы и развлечений',
-        price: '29990',
-        image: 'https://img.freepik.com/premium-photo/',
-      },
-    ],
+    type: ProductsResponseDto,
   })
   @ApiResponse({
     status: 400,
@@ -81,9 +71,8 @@ export class ProductsController {
     description: 'Внутренняя ошибка сервера',
   })
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    const data = await this.productsService.findOne(+id);
-    return { data };
+  findOne(@Param('id') id: string) {
+    return this.productsService.findOne(+id);
   }
 
   @Patch(':id')

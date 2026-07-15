@@ -30,3 +30,17 @@ export class ProductDto {
   })
   image?: string;
 }
+
+export class ProductsResponseDto {
+  @ApiProperty({ type: [ProductDto] })
+  data: ProductDto[];
+
+  @ApiProperty({ example: 100 })
+  total: number;
+
+  @ApiProperty({ example: 1 })
+  page: number;
+
+  @ApiProperty({ example: 10 })
+  limit: number;
+}

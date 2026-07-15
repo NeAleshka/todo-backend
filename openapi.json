@@ -178,20 +178,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ProductDto"
-                  }
-                },
-                "example": [
-                  {
-                    "id": 1,
-                    "name": "Ноутбук Pro",
-                    "description": "Мощный ноутбук для работы и развлечений",
-                    "price": "29990",
-                    "image": "https://img.freepik.com/premium-photo/"
-                  }
-                ]
+                  "$ref": "#/components/schemas/ProductsResponseDto"
+                }
               }
             }
           },
@@ -404,6 +392,35 @@
           "id",
           "name",
           "price"
+        ]
+      },
+      "ProductsResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductDto"
+            }
+          },
+          "total": {
+            "type": "number",
+            "example": 100
+          },
+          "page": {
+            "type": "number",
+            "example": 1
+          },
+          "limit": {
+            "type": "number",
+            "example": 10
+          }
+        },
+        "required": [
+          "data",
+          "total",
+          "page",
+          "limit"
         ]
       },
       "UpdateProductDto": {
